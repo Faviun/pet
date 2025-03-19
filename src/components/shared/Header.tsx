@@ -15,7 +15,7 @@ export const Header: React.FC<Props> = ({className}) => {
         <header className={cn("border-b border-gray-100", className)}>
             <Container className="flex items-center justify-between py-8">
                 <div className="flex items-center gap-4">
-                    <Image src="/logo.png" width={35} height={35} alt="Logo" />
+                    <Image src="/logo.png" width={50} height={50} alt="Logo" />
                     <div>
                         <h1 className="text-2xl uppercase font-black">
                             Next Pizza

@@ -1,4 +1,8 @@
+export { FilterCheckbox } from './filter-checkbox';
 export { Title } from './title';
 export { Container } from './container'
-export { Header } from './Header'
+export { Header } from './header'
 export { Categories } from './categories'
+export { SortPopup } from './sort-popup'
+export { TopBar } from './top-bar'
+export { Filters } from './filters'
