@@ -4,7 +4,7 @@ import Image from "next/image";
 import {Container} from "./container";
 import {Button} from "../ui";
 import {ArrowRight, ShoppingCart, User} from "lucide-react";
-import {cn} from "@/src/components/lib/utils";
+import {cn} from "@/src/lib/utils";
 
 interface Props {
     className?: string;

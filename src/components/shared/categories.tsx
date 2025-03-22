@@ -1,22 +1,27 @@
+"use client";
+
 import React from "react";
-import {cn} from "../lib/utils";
+import {cn} from "../../lib/utils";
+import {useCategoryStore} from "@/src/store/category";
 
 interface Props {
     className?: string;
 }
 
 const cats = [
-    "Пиццы",
-    "Комбо",
-    "Закуски",
-    "Коктейли",
-    "Кофе",
-    "Напитки",
-    "Десерты",
+    {id: 1, name: "Шериф"},
+    {id: 2, name: "Мафия"},
+    {id: 3, name: "Полиция"},
+    {id: 4, name: "Детектив"},
+    {id: 5, name: "Комедия"},
+    {id: 6, name: "Драма"},
+    {id: 7, name: "Фэнтези"},
+    {id: 8, name: "Ужасы"},
 ];
-const activeIndex = 0;
 
 export const Categories: React.FC<Props> = ({className}) => {
+    const categoryActiveId = useCategoryStore((state) => state.activeId);
+
     return (
         <div
             className={cn(
@@ -24,16 +29,17 @@ export const Categories: React.FC<Props> = ({className}) => {
                 className
             )}
         >
-            {cats.map((cat, index) => (
+            {cats.map(({name, id}, index) => (
                 <a
                     className={cn(
                         "flex items-center font-bold h-11 rounded-2xl px-5",
-                        activeIndex === index &&
+                        categoryActiveId === id &&
                             "bg-white shadow-md shadow-gray-200 text-primary"
                     )}
+                    href={`/#${name}`}
                     key={index}
                 >
-                    <button>{cat}</button>
+                    <button>{name}</button>
                 </a>
             ))}
         </div>
