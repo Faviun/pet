@@ -8,3 +8,4 @@ export { TopBar } from './top-bar'
 export { Filters } from './filters'
 export { RangeSlider } from './range-slider'
 export { ProductCard } from './product-card';
+export { SearchInput } from './search-input'

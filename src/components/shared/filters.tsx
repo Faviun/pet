@@ -1,15 +1,29 @@
+"use client";
+
 import React from "react";
 import {Title} from "./title";
 import {FilterCheckbox} from "./filter-checkbox";
 import {Input} from "../ui";
 import {RangeSlider} from "./range-slider";
 import {CheckboxFiltersGroup} from "./checkbox-filters-group";
+import {useFilterIngredients} from "@/hooks/useFilterIngredients";
 
 interface Props {
     className?: string;
 }
 
 export const Filters: React.FC<Props> = ({className}) => {
+    const {ingredients} = useFilterIngredients();
+
+    console.log("ingredients:" + ingredients);
+
+    const items = ingredients.map((item) => ({
+        value: String(item.id),
+        text: item.name,
+    }));
+
+    console.log("items:" + items);
+
     return (
         <div className={className}>
             <Title text="Фильтрация" size="sm" className="mb-5 font-bold" />
@@ -41,24 +55,8 @@ export const Filters: React.FC<Props> = ({className}) => {
                 title="Ингридиенты"
                 className="mt-5"
                 limit={6}
-                defaulItems={[
-                    {value: "1", text: "Мясо"},
-                    {value: "2", text: "Сыр"},
-                    {value: "3", text: "Огурцы"},
-                    {value: "4", text: "Помидоры"},
-                    {value: "5", text: "Оливки"},
-                    {value: "6", text: "Грибы"},
-                    {value: "7", text: "Кукуруза"},
-                ]}
-                items={[
-                    {value: "1", text: "Мясо"},
-                    {value: "2", text: "Сыр"},
-                    {value: "3", text: "Огурцы"},
-                    {value: "4", text: "Помидоры"},
-                    {value: "5", text: "Оливки"},
-                    {value: "6", text: "Грибы"},
-                    {value: "7", text: "Кукуруза"},
-                ]}
+                defaulItems={items.slice(0, 6)}
+                items={items}
             />
         </div>
     );
