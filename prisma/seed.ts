@@ -1,6 +1,6 @@
 import { hashSync } from "bcrypt";
 import { prisma } from "./prisma-client";
-import { categories, ingridients, products } from "./constants";
+import { categories, ingredients, products } from "./constants";
 
 async function up() {
     await prisma.user.createMany({
@@ -24,8 +24,8 @@ async function up() {
         data: categories
     })
 
-    await prisma.ingridient.createMany({
-        data: ingridients
+    await prisma.ingredient.createMany({
+        data: ingredients
     })
 
     await prisma.product.createMany({
@@ -37,7 +37,7 @@ async function up() {
             name: 'Маргарита',
             imageUrl: 'https://cdn.pixabay.com/photo/2016/08/26/15/12/tomatoes-1621813_960_720.jpg',
             categoryId: 1,
-            ingridients: {
+            ingredients: {
                 connect: [
                     {id: 1},
                     {id: 3},
@@ -51,7 +51,7 @@ async function up() {
             name: 'Пепперони',
             imageUrl: 'https://cdn.pixabay.com/photo/2016/08/26/15/12/tomatoes-1621813_960_720.jpg',
             categoryId: 1,
-            ingridients: {
+            ingredients: {
                 connect: [
                     {id: 2},
                     {id: 3},
@@ -65,7 +65,7 @@ async function up() {
             name: 'Четыре сыра',
             imageUrl: 'https://cdn.pixabay.com/photo/2016/08/26/15/12/tomatoes-1621813_960_720.jpg',
             categoryId: 1,
-            ingridients: {
+            ingredients: {
                 connect: [
                     {id: 1},
                     {id: 2},
@@ -87,15 +87,42 @@ async function up() {
             {productId: pizza3.id, price: 250, pizzaType: 1, size: 20},
         ]
     })
+
+    await prisma.cart.createMany({
+        data: [
+            {
+                userId: 1,
+                totalAmount: 0,
+                token: '11111'
+            }, {userId: 2,
+                totalAmount: 0,
+                token: '22222'}]
+    })
     
+    await prisma.cartItem.create({
+        data: {
+                cartId: 1, 
+                productItemId: 1, 
+                quantity: 1, 
+                ingredients: {
+                    connect: [
+                        {id: 1},
+                        {id: 3},
+                    ]
+                }
+            }
+    })
+
 }
 
 async function down() {
     await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE`;
     await prisma.$executeRaw`TRUNCATE TABLE "Category" RESTART IDENTITY CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE "Ingridient" RESTART IDENTITY CASCADE`;
+    await prisma.$executeRaw`TRUNCATE TABLE "Ingredient" RESTART IDENTITY CASCADE`;
     await prisma.$executeRaw`TRUNCATE TABLE "Product" RESTART IDENTITY CASCADE`;
     await prisma.$executeRaw`TRUNCATE TABLE "ProductItem" RESTART IDENTITY CASCADE`;
+    await prisma.$executeRaw`TRUNCATE TABLE "Cart" RESTART IDENTITY CASCADE`;
+    await prisma.$executeRaw`TRUNCATE TABLE "CartItem" RESTART IDENTITY CASCADE`;
     
 }
 

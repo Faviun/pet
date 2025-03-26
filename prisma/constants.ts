@@ -6,11 +6,11 @@ export const categories = [
     {name: 'Салаты'},
 ]
 
-export const ingridients = [
+export const ingredients = [
     {name: 'Помидоры', price: 10, imageUrl: 'https://cdn.pixabay.com/photo/2016/08/26/15/12/tomatoes-1621813_960_720.jpg'},
     {name: 'Огурцы', price: 10, imageUrl: 'https://cdn.pixabay.com/photo/2016/08/26/15/12/tomatoes-1621813_960_720.jpg'},
     {name: 'Сыр', price: 10, imageUrl: 'https://cdn.pixabay.com/photo/2016/08/26/15/12/tomatoes-1621813_960_720.jpg'},
-].map((ingridient, index) => ({id: index + 1, ...ingridient}))
+].map((ingredient, index) => ({id: index + 1, ...ingredient}))
 
 export const products = [
     {name: 'Маргарита1', imageUrl: 'https://cdn.pixabay.com/photo/2016/08/26/15/12/tomatoes-1621813_960_720.jpg', categoryId: 2},
