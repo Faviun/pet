@@ -2,18 +2,21 @@
 
 import React from "react";
 import {FilterChecboxProps, FilterCheckbox} from "./filter-checkbox";
-import {Input} from "../ui";
+import {Input, Skeleton} from "../ui";
 
 type Item = FilterChecboxProps;
 
 interface Props {
     title: string;
     items: Item[];
-    defaulItems: Item[];
+    defaulItems?: Item[];
     limit?: number;
+    loading?: boolean;
     searchInputPlaceholder?: string;
-    onchange?: (value: string) => void;
+    onCliclCheckbox?: (id: string) => void;
     defaultValue?: string[];
+    selected?: Set<string>;
+    name?: string;
     className?: string;
 }
 
@@ -22,19 +25,40 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
     items,
     defaulItems,
     limit = 5,
+    loading,
     searchInputPlaceholder = "Поиск...",
-    onchange,
+    onCliclCheckbox,
     defaultValue,
+    selected,
+    name,
     className,
 }) => {
     const [showAll, setShowAll] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState("");
 
+    if (loading) {
+        return (
+            <div className={className}>
+                <p className="font-bold mb-3">{title}</p>
+
+                {...Array(limit)
+                    .fill(0)
+                    .map((_, index) => (
+                        <Skeleton
+                            key={index}
+                            className="h-6 mb-4 rounded-[8px]"
+                        />
+                    ))}
+                <Skeleton className="w-28 h-6 mb-4 rounded-[8px]" />
+            </div>
+        );
+    }
+
     const list = showAll
         ? items.filter((item) =>
               item.text.toLowerCase().includes(searchValue.toLowerCase())
           )
-        : defaulItems.slice(0, limit);
+        : (defaulItems || items).slice(0, limit);
 
     const onChangeSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);
@@ -56,11 +80,12 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
                 {list.map((item, index) => (
                     <FilterCheckbox
                         key={index}
-                        onCheckedChange={() => console.log("checked")}
-                        checked={false}
+                        onCheckedChange={() => onCliclCheckbox?.(item.value)}
+                        checked={selected?.has(item.value)}
                         value={item.value}
                         text={item.text}
                         endAdornment={item.endAdornment}
+                        name={name}
                     />
                 ))}
             </div>
