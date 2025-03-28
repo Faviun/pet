@@ -1,13 +1,31 @@
+import {prisma} from "@/prisma/prisma-client";
 import {Container, Filters, Title, TopBar} from "@/src/components/shared";
 import {ProductGroupList} from "@/src/components/shared/product-group-list";
 
-export default function Home() {
+export default async function Home() {
+    const categories = await prisma.category.findMany({
+        include: {
+            products: {
+                include: {
+                    ingredients: true,
+                    items: true,
+                },
+            },
+        },
+    });
+
     return (
         <>
             <Container className="mt-10">
                 <Title text="Все пиццы" size="lg" className="font-extrabold" />
             </Container>
-            <TopBar />
+
+            <TopBar
+                categories={categories.filter(
+                    (category) => category.products.length > 0
+                )}
+            />
+
             <Container className="mt-10 pb-14">
                 <div className="flex gap-[60px]">
                     <div className="w-[250px]">
@@ -15,94 +33,17 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                         <div className="flex flex-col gap-16">
-                            <ProductGroupList
-                                categoryId={1}
-                                title="Шериф"
-                                items={[
-                                    {
-                                        id: 1,
-                                        name: "товар 1",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 500}],
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "товар 2",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 600}],
-                                    },
-                                ]}
-                            />
-                            <ProductGroupList
-                                categoryId={2}
-                                title="не Шериф"
-                                items={[
-                                    {
-                                        id: 1,
-                                        name: "товар 1",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 500}],
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "товар 2",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 600}],
-                                    },
-                                    {
-                                        id: 3,
-                                        name: "товар 2",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 600}],
-                                    },
-                                    {
-                                        id: 4,
-                                        name: "товар 2",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 600}],
-                                    },
-                                ]}
-                            />
-                            <ProductGroupList
-                                categoryId={3}
-                                title="не Шериф 2"
-                                items={[
-                                    {
-                                        id: 1,
-                                        name: "товар 1",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 500}],
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "товар 2",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 600}],
-                                    },
-                                    {
-                                        id: 3,
-                                        name: "товар 2",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 600}],
-                                    },
-                                    {
-                                        id: 4,
-                                        name: "товар 2",
-                                        imageUrl:
-                                            "https://hi-tech.md/images/thumbnails/230/230/detailed/365/Холодильник_Gorenje_RK14EPS4_1.jpg",
-                                        items: [{price: 600}],
-                                    },
-                                ]}
-                            />
+                            {categories.map(
+                                (category) =>
+                                    category.products.length > 0 && (
+                                        <ProductGroupList
+                                            key={category.id}
+                                            title={category.name}
+                                            categoryId={category.id}
+                                            items={category.products}
+                                        />
+                                    )
+                            )}
                         </div>
                     </div>
                 </div>

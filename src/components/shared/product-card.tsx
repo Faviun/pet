@@ -36,12 +36,11 @@ export const ProductCard: React.FC<Props> = ({
                     <span className="text-[20px]">
                         <b>{price} Р</b>
                     </span>
+                    <Button variant="secondary" className="text-base font-bold">
+                        <Plus size={20} className="mr-1" />
+                        Добавить
+                    </Button>
                 </div>
-
-                <Button variant="secondary" className="text-base font-bold">
-                    <Plus size={20} className="mr-1" />
-                    Добавить
-                </Button>
             </Link>
         </div>
     );
