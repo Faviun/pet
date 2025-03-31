@@ -6,7 +6,7 @@ export const categories = [
     {name: 'Салаты'},
 ]
 
-export const ingredients = [
+export const _ingredients = [
     {name: 'Помидоры', price: 10, imageUrl: '/images/cake.jpg'},
     {name: 'Огурцы', price: 10, imageUrl: '/images/cake.jpg'},
     {name: 'Сыр', price: 10, imageUrl: '/images/cake.jpg'},
